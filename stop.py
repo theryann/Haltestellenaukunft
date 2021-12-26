@@ -136,17 +136,26 @@ class Haltestelle:
 
 
         # mainloop
-        self.update()
+        self.on_after()
         self.root.after(30*1000, self.on_after)
         # self.departures = dvb.monitor('Tronitzer Straße', 0, 10, 'Dresden')
         self.root.mainloop()
 
 
     def on_after(self):
-        self.departures = dvb.monitor(self.stop, 0, 10, 'Dresden')
-        self.update()
-        self.root.after(30*1000, self.on_after)
-        # print(self.departures)
+        try:
+            self.departures = dvb.monitor(self.stop, 0, 10, 'Dresden')
+            if not self.departures == {}:
+                self.update()
+                self.root.after(30*1000, self.on_after)
+                print('soweit gut')
+            if self.error_label:
+                self.error_label.destroy()
+        except:
+            self.error_label = Label(text='NETWORK ERROR', fg='Red')
+            self.error_label.pack()
+            self.error_label.place(x=200,y=200)
+
 
 
     ''' Data einfüllen'''

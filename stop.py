@@ -1,6 +1,6 @@
 import dvb
 from tkinter import *
-import time
+import os
 
 class Haltestelle:
 
@@ -12,8 +12,10 @@ class Haltestelle:
         bg_color ="#101010"     #Globale Hintergrundfarbe
 
         self.root = Tk()
-        self.root.title("Abfahrten")
+        self.root.title("Fahrten")
+        self.root.iconbitmap(os.getcwd() + '\\logo.ico')
         self.root.geometry("500x507+600+200")
+        # self.root.overrideredirect(1)
         self.root.configure(background=bg_color)
 
         # Attriblutes
@@ -148,7 +150,6 @@ class Haltestelle:
             if not self.departures == {}:
                 self.update()
                 self.root.after(30*1000, self.on_after)
-                print('soweit gut')
             if self.error_label:
                 self.error_label.destroy()
         except:
@@ -178,7 +179,13 @@ class Haltestelle:
             self.line_label_list[i].configure(text=line_text)
             self.line_label_list[i].place(x=margin_line, y=self.top_margin + i * self.line_text_size * 2)
             
-            self.direction_label_list[i].configure(text=dep['direction'])
+            max_dir = int((margin_min - margin_direction) / (self.line_text_size ))
+            if len(dep['direction']) > max_dir:
+                direction_text = dep['direction'][:max_dir] + '...'
+            else:
+                direction_text = dep['direction']
+
+            self.direction_label_list[i].configure(text=direction_text)
             self.direction_label_list[i].place(x=margin_direction, y=self.top_margin + i * self.line_text_size * 2)
 
             if dep['arrival'] <= 60:
@@ -202,6 +209,4 @@ class Haltestelle:
 
 
 
-hs2 = Haltestelle('Albertplatz')
-# hs2.show()
-# hs = Haltestelle('Tronitzer Straße')
+hs = Haltestelle('Albertplatz')

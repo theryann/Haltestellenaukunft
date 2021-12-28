@@ -1,6 +1,7 @@
 import dvb
 from tkinter import *
 import os
+from datetime import datetime, time
 
 class Haltestelle:
 
@@ -8,18 +9,18 @@ class Haltestelle:
         self.stop = haltestelle
         self.departures = dvb.monitor(self.stop, 0, 10, 'Dresden')
         
-        # # Window
+        # Window
         bg_color ="#101010"     #Globale Hintergrundfarbe
 
         self.root = Tk()
         self.root.title("Fahrten")
         self.root.iconbitmap(os.getcwd() + '\\logo.ico')
-        self.root.geometry("500x507+600+200")
+        self.root.geometry("500x507")
         # self.root.overrideredirect(1)
         self.root.configure(background=bg_color)
 
         # Attriblutes
-        self.font_face = "Courier New"
+        self.font_face = "Courier"
         self.line_text_size = 20
         self.top_margin = 60
         
@@ -27,6 +28,13 @@ class Haltestelle:
         # Pivot Haltestelle
         self.haltestelle_text = Label(text = self.stop, fg = "Yellow", bg=bg_color, font=(self.font_face, 30))
         self.haltestelle_text.pack()
+
+        # Uhrzeit
+        now = datetime.now()
+        self.uhrzeit_text = now.strftime('%H:%M')
+        self.uhrzeit = Label(text = self.uhrzeit_text, fg =bg_color, bg='Yellow', font=(self.font_face, self.line_text_size))
+        self.uhrzeit.pack()
+        self.uhrzeit.place(x=400, y=5)
 
         ''' Labels anbringen '''
 
@@ -138,6 +146,7 @@ class Haltestelle:
 
 
         # mainloop
+        self.error_label = None
         self.on_after()
         self.root.after(30*1000, self.on_after)
         # self.departures = dvb.monitor('Tronitzer Straße', 0, 10, 'Dresden')
@@ -150,17 +159,27 @@ class Haltestelle:
             if not self.departures == {}:
                 self.update()
                 self.root.after(30*1000, self.on_after)
-            if self.error_label:
+            if self.error_label != None:
                 self.error_label.destroy()
+                self.error_label = None
         except:
+            if self.error_label != None:
+                self.error_label.destroy()
+                self.error_label = None
             self.error_label = Label(text='NETWORK ERROR', fg='Red')
             self.error_label.pack()
             self.error_label.place(x=200,y=200)
+            self.root.after(30*1000, self.on_after)
 
 
 
     ''' Data einfüllen'''
-    def update(self):          
+    def update(self):      
+
+        # Uhrzeit ändern
+        now = datetime.now()
+        self.uhrzeit_text = now.strftime('%H:%M')   
+        self.uhrzeit.configure(text=self.uhrzeit_text)
         
         # zur abschätzung wie weit die namen eingerückt sein müssen
         max_line_width = 0

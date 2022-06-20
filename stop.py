@@ -169,7 +169,7 @@ class Haltestelle:
             self.error_label = Label(text='NETWORK ERROR', fg='Red')
             self.error_label.pack()
             self.error_label.place(x=200,y=200)
-            self.root.after(30*1000, self.on_after)
+            self.root.after(60*1000, self.on_after)
 
 
 
@@ -198,9 +198,9 @@ class Haltestelle:
             self.line_label_list[i].configure(text=line_text)
             self.line_label_list[i].place(x=margin_line, y=self.top_margin + i * self.line_text_size * 2)
             
-            max_dir = int((margin_min - margin_direction) / (self.line_text_size ))
+            max_dir = int((margin_min - margin_direction) / self.line_text_size )
             if len(dep['direction']) > max_dir:
-                direction_text = dep['direction'][:max_dir] + '...'
+                direction_text = dep['direction'][:max_dir] + '…'
             else:
                 direction_text = dep['direction']
 

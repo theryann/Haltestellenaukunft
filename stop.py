@@ -1,4 +1,4 @@
-import dvb
+from dvb import monitor
 from tkinter import *
 import os
 from datetime import datetime, time
@@ -7,7 +7,7 @@ class Haltestelle:
 
     def __init__(self, haltestelle='Alberplatz'):
         self.stop = haltestelle
-        self.departures = dvb.monitor(self.stop, 0, 10, 'Dresden')
+        self.departures = monitor(self.stop, 0, 10, 'Dresden')
         
         # Window
         bg_color ="#101010"     #Globale Hintergrundfarbe
@@ -149,13 +149,13 @@ class Haltestelle:
         self.error_label = None
         self.on_after()
         self.root.after(30*1000, self.on_after)
-        # self.departures = dvb.monitor('Tronitzer Straße', 0, 10, 'Dresden')
+        # self.departures = monitor('Tronitzer Straße', 0, 10, 'Dresden')
         self.root.mainloop()
 
 
     def on_after(self):
         try:
-            self.departures = dvb.monitor(self.stop, 0, 10, 'Dresden')
+            self.departures = monitor(self.stop, 0, 10, 'Dresden')
             if not self.departures == {}:
                 self.update()
                 self.root.after(30*1000, self.on_after)

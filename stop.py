@@ -14,14 +14,14 @@ class Haltestelle:
 
         self.root = Tk()
         self.root.title("Fahrten")
-        self.root.iconbitmap(os.getcwd() + '\\logo.ico')
-        self.root.geometry("500x507")
+        #self.root.iconbitmap(os.getcwd() + '/logo.png')
+        self.root.geometry("700x707")
         # self.root.overrideredirect(1)
         self.root.configure(background=bg_color)
 
         # Attriblutes
         self.font_face = "Courier"
-        self.line_text_size = 20
+        self.line_text_size = 30
         self.top_margin = 60
         
 
